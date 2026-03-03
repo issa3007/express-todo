@@ -4,6 +4,7 @@ import { Task } from "./task.model";
 User.hasMany(Task, {
   foreignKey: "userId",
   as: "tasks",
+  onDelete: "CASCADE",
 });
 
 Task.belongsTo(User, {

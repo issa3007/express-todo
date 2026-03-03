@@ -1,7 +1,27 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/database";
 
-export class Task extends Model {}
+interface TaskAttributes {
+  id: number;
+  title: string;
+  status: "todo" | "in_progress" | "done";
+  priority: "low" | "medium" | "high";
+  userId: number;
+}
+
+export interface TaskCreationAttributes
+  extends Optional<TaskAttributes, "id"> {}
+
+export class Task
+  extends Model<TaskAttributes, TaskCreationAttributes>
+  implements TaskAttributes
+{
+  public id!: number;
+  public title!: string;
+  public status!: "todo" | "in_progress" | "done";
+  public priority!: "low" | "medium" | "high";
+  public userId!: number;
+}
 
 Task.init(
   {
@@ -22,21 +42,14 @@ Task.init(
       type: DataTypes.ENUM("low", "medium", "high"),
       defaultValue: "medium",
     },
-
-    userId: {
+    userId: {                     
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: "users",
-        key: "id",
-      },
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
     },
   },
   {
     sequelize,
     tableName: "tasks",
     timestamps: true,
-  },
+  }
 );
