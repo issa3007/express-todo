@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/database";
-import { User } from "./user.model";
 
 export class Task extends Model {}
 
@@ -23,9 +22,16 @@ Task.init(
       type: DataTypes.ENUM("low", "medium", "high"),
       defaultValue: "medium",
     },
+
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: "users",
+        key: "id",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
     },
   },
   {
