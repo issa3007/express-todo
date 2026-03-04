@@ -22,7 +22,7 @@ async function start() {
 
     await sequelize.sync();
 
-    app.listen([port], () => {
+    app.listen(port, () => {
       console.log(`Server started on Port ${port}`);
     });
   } catch (err) {
